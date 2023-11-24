@@ -35,12 +35,15 @@
     border: none;
     font-size: 1.2rem;
     padding: 0.5rem 1rem;
-    background-color: grey;
+    background: linear-gradient(90deg, #808080 60%, #663399 115%);
     color: white;
     font-weight: bold;
     margin-left: -2rem;
     cursor: pointer;
 }
+.add-button:hover {
+    background: #663399;
+  }
 .todo-list{
     background: white;
     margin-top: 1.5rem;
