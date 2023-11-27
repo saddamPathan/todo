@@ -1,7 +1,7 @@
 .todo-main{
     display: flex;
     flex-direction: column;
-    width: 30rem;
+    width: 70%;
     min-height: 30rem;
     padding: 2rem 3rem;
     margin: 2rem 2rem;
@@ -19,7 +19,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 1rem;
+    margin: 1rem;
 }
 .input-field{
     width: 100%;
@@ -49,4 +49,14 @@
     margin-top: 1.5rem;
     border-radius: 1.5rem;
     padding: 1rem;
+}
+
+.complete-button{
+    border-radius: 0.5rem;
+    border: none;
+    background: linear-gradient(90deg, #808080 60%, #663399 115%);
+    color: white;
+    font-weight: bold;
+    padding: 0.3rem;
+    cursor: pointer;
 }
