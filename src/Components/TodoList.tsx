@@ -1,6 +1,6 @@
 import "./TodoList.css"
 import { useCount } from "./useCount";
-import { NO_TODO_LABEL, TOTAL_NUMBER_TODO_LABEL } from './constants';
+import { NO_TODO_LABEL, TOTAL_NUMBER_TODO_LABEL } from '../Utils/constants';
 
 const TodoList = (props: any) => {
     const { getCount } = useCount();
