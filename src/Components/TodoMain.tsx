@@ -1,5 +1,5 @@
 import "./TodoMain.css"
-import React, { useMemo, useRef, useState } from "react";
+import React, { memo, useMemo, useRef, useState } from "react";
 import { useCount } from "./useCount";
 import { ADD_LABEL, TODO_LABEL } from './constants';
 import { AgGridReact } from "ag-grid-react";
@@ -24,8 +24,8 @@ const TodoMain = () => {
 
     const columnDefs: (ColDef<any> | ColGroupDef<object>)[] = [
         { field: 'id', headerName: 'Sr. No.', sortable: false, filter: false },
-        { field: 'value', headerName: 'Task To-do', flex: 3 },
-        { field: 'Complete', headerName: 'Action', cellRenderer: SimpleButton }
+        { field: 'value', headerName: 'Task To-do', tooltipField: 'value', flex: 3 },
+        { field: 'Complete', headerName: 'Action', cellRenderer: memo(SimpleButton) }
     ];
 
     const defaultColDef = useMemo(() => ({
@@ -53,6 +53,11 @@ const TodoMain = () => {
         }
     };
 
+    const getRowId = (param: any) => {
+        // used to set unique id for each row 
+        return param.data.id;
+    }
+
     return (
         <div className="todo-main">
             <div className="title">{TODO_LABEL}</div>
@@ -61,7 +66,9 @@ const TodoMain = () => {
                 <button className="add-button" onClick={addTodo}>{ADD_LABEL}</button>
             </div>
             <div className="ag-theme-alpine" style={{ width: '100%', height: '100%' }}>
-                <AgGridReact getRowStyle={getRowStyle} rowData={todoArr} columnDefs={columnDefs} defaultColDef={defaultColDef}></AgGridReact>
+                <AgGridReact getRowId={getRowId} getRowStyle={getRowStyle} rowData={todoArr} columnDefs={columnDefs} defaultColDef={defaultColDef}
+                    rowSelection="multiple" animateRows={true}
+                ></AgGridReact>
             </div>
         </div>
     )
