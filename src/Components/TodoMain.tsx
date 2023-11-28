@@ -54,7 +54,7 @@ const TodoMain = () => {
     };
 
     const getRowId = (param: any) => {
-        // used to set unique id for each row 
+        // used to get unique id for each row 
         return param.data.id;
     }
 
