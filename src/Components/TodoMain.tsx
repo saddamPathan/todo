@@ -6,22 +6,19 @@ import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 import { ColDef, ColGroupDef, GetRowIdFunc, RowClassParams, RowStyle } from "ag-grid-community";
-
-interface TodoItem {
-    id: number;
-    value: string;
-    isComplete: boolean;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { addTodoType, TodoItem, todoState } from "../Store/actions";
 
 const TodoMain = () => {
+    const todoRedux = useSelector<todoState, todoState["todoList"]>((state) => { return state.todoList })
+    const dispatch = useDispatch();
+
     const { incrementCount, getCount } = useCount();
-    const [todoArr, setTodo] = useState<Array<TodoItem>>([]);
     const [inputValue, setInputValue] = useState<string>('');
 
     const SimpleButton = (p: { rowIndex: number; node: { data: TodoItem } }) => {
         const onComplete = () => {
-            todoArr.splice(p.rowIndex, 1, { ...p.node.data, isComplete: !p.node.data.isComplete });
-            setTodo([...todoArr]);
+            dispatch({ type: "UPDATE_TODO", payload: { ...p.node.data, isComplete: !p.node.data.isComplete } });
         };
         return (
             <button className="complete-button" onClick={onComplete}>{p.node.data.isComplete ? 'Completed' : 'Pending'}</button>
@@ -44,7 +41,7 @@ const TodoMain = () => {
     const addTodo = () => {
         if (inputValue) {
             incrementCount();
-            setTodo([...todoArr, { value: inputValue, id: getCount(), isComplete: false }]);
+            dispatch(addTodoType({ value: inputValue, id: getCount(), isComplete: false }))
             setInputValue("");
         } else {
             alert('Please enter input text.')
@@ -68,11 +65,11 @@ const TodoMain = () => {
         <div className="todo-main">
             <div className="title">{TODO_LABEL}</div>
             <div className="add-todo">
-                <input value={inputValue} onChange={(e) => {setInputValue(e.target.value)}} className="input-field" type="text" placeholder="Add Your Task ToDo" />
+                <input value={inputValue} onChange={(e) => { setInputValue(e.target.value) }} className="input-field" type="text" placeholder="Add Your Task ToDo" />
                 <button className="add-button" onClick={addTodo}>{ADD_LABEL}</button>
             </div>
             <div className="ag-theme-alpine" style={{ width: '100%', height: '100%' }}>
-                <AgGridReact getRowId={getRowId} getRowStyle={getRowStyle} rowData={todoArr} columnDefs={columnDefs} defaultColDef={defaultColDef}
+                <AgGridReact getRowId={getRowId} getRowStyle={getRowStyle} rowData={todoRedux} columnDefs={columnDefs} defaultColDef={defaultColDef}
                     rowSelection="multiple" animateRows={true} pagination={true} paginationPageSize={10}
                 ></AgGridReact>
             </div>
